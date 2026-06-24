@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spesial Buat Salma ✨</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: linear-gradient(to bottom, #070b12, #101726, #1a233a);
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Bintang Berkedip */
+        .stars-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: blink 2s infinite ease-in-out;
+        }
+
+        /* Container Utama Web Story */
+        .story-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            max-height: 850px;
+            background: rgba(10, 15, 30, 0.6);
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        @media (min-width: 480px) {
+            .story-wrapper {
+                border-radius: 24px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                height: 90vh;
+            }
+        }
+
+        /* Bar Progress Indikator */
+        .progress-container {
+            display: flex;
+            padding: 15px 15px 5px 15px;
+            gap: 5px;
+            z-index: 20;
+        }
+        .progress-bar {
+            height: 4px;
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #feb1b7, #f77062);
+            transition: width 0.3s ease;
+        }
+
+        /* Slide System */
+        .slides-container {
+            flex-grow: 1;
+            position: relative;
+            width: 100%;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: scale(0.95);
+            z-index: 5;
+        }
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        /* Elemen Estetik Slide */
+        .moon {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            animation: pulse 3s infinite;
+            filter: drop-shadow(0 0 20px rgba(254, 241, 154, 0.6));
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.4;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .handwritten {
+            font-family: 'Caveat', cursive;
+            font-size: 2.2rem;
+            color: #feb1b7;
+            margin-bottom: 10px;
+        }
+
+        /* Bingkai Foto dengan Animasi Denyut */
+        .photo-frame {
+            width: 80%;
+            aspect-ratio: 1/1;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 4px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+            margin-bottom: 20px;
+            position: relative;
+            animation: frameHeartbeat 4s infinite ease-in-out;
+        }
+        
+        /* Animasi Gambar Bergerak (Ken Burns Effect) saat Slide Aktif */
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1);
+            transition: none;
+        }
+        
+        .slide.active .photo-frame img {
+            animation: imageCinematic 8s infinite alternate ease-in-out;
+        }
+
+        /* Teks Pesan */
+        .caption-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+        .caption-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            margin-bottom: 15px;
+        }
+
+        /* Tombol Lanjut di Tengah Tengah */
+        .center-next-btn {
+            background: linear-gradient(135deg, #feb1b7, #f77062);
+            border: none;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(247, 112, 98, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .center-next-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 7px 20px rgba(247, 112, 98, 0.6);
+        }
+
+        /* Surat Rahasia */
+        .envelope-box {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            padding: 25px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .envelope-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        .letter-content {
+            display: none;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #f1f5f9;
+            text-align: justify;
+            animation: slideDown 0.6s ease forwards;
+        }
+
+        /* Navigasi Balik Kiri Bawah */
+        .bottom-nav {
+            display: flex;
+            justify-content: flex-start;
+            padding: 10px 24px 20px 24px;
+            z-index: 20;
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #a0aec0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        /* SEMUA DAFTAR ANIMASI */
+        @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Animasi Pergerakan Foto Lambat & Romantis */
+        @keyframes imageCinematic {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.15) translate(-2%, -1%); }
+        }
+
+        /* Animasi Denyut Jantung Lembut di Bingkai */
+        @keyframes frameHeartbeat {
+            0%, 100% { transform: rotate(-1deg) scale(1); box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6); }
+            50% { transform: rotate(1deg) scale(1.02); box-shadow: 0 15px 45px rgba(254, 177, 183, 0.3); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars-container" id="starsBox"></div>
+
+    <div class="story-wrapper">
+        
+        <!-- Status Bar -->
+        <div class="progress-container" id="progressContainer"></div>
+
+        <!-- Slides -->
+        <div class="slides-container">
+            
+            <!-- SLIDE 1: Cover -->
+            <div class="slide active">
+                <div class="moon">🌙</div>
+                <p class="handwritten">Good Night</p>
+                <h1>Salma Putri<br>Syahpanah! ❤️</h1>
+                <button class="center-next-btn" onclick="nextSlide()">
+                    Mulai Sesuatu ✨ <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- SLIDE 2: Foto 1 -->
+            <div class="slide">
+                <p class="handwritten">Our Memory</p>
+                <div class="photo-frame">
+                    <img src="https://raw.githubusercontent.com/naufal0331/Selamat-Boboo-Sayangggg/main/foto1.jpeg" alt="Kenangan 1">
+                </div>
+                <div class="caption-card">
+                    <p>"Inget kan pas kita momen ini? Rasanya selalu bersyukur banget bisa nemuin orang sehebat dan selucu kamu dalam hidupku."</p>
+                    <button class="center-next-btn" onclick="nextSlide()">
+                        Lanjut <i class="fa-solid fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SLIDE 3: Foto 2 -->
+            <div class="slide">
+                <p class="handwritten">My Favorite Person</p>
+                <div class="photo-frame">
+                    <img src="https://raw.githubusercontent.com/naufal0331/Selamat-Boboo-Sayangggg/main/foto2.jpeg" alt="Kenangan 2">
+                </div>
+                <div class="caption-card">
+                    <p>"Makasih ya, kamu selalu sabar dan dengerin semua ceritaku. Jangan pernah bosen ya buat selalu bareng-bareng sama aku."</p>
+                    <button class="center-next-btn" onclick="nextSlide()">
+                        Lanjut <i class="fa-solid fa-star"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SLIDE 4: Foto 3 -->
+            <div class="slide">
+                <p class="handwritten">Special Warm Hug</p>
+                <div class="photo-frame">
+                    <img src="https://raw.githubusercontent.com/naufal0331/Selamat-Boboo-Sayangggg/main/foto3.jpeg" alt="Kenangan 3">
+                </div>
+                <div class="caption-card">
+                    <p>"Kamu itu alasan kenapa aku pengen cepet-cepet besok pagi, cuma buat denger suara kamu lagi. Tapi sekarang, istirahat dulu yaa."</p>
+                    <button class="center-next-btn" onclick="nextSlide()">
+                        Pesan Terakhir <i class="fa-solid fa-envelope"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SLIDE 5: Surat Rahasia -->
+            <div class="slide">
+                <div class="moon" style="font-size: 3rem;">✉️</div>
+                <p class="handwritten" style="font-size: 1.8rem; margin-bottom: 20px;">Last Letter for Tonight</p>
+                
+                <div class="envelope-box" onclick="bukaSurat()">
+                    <p id="tombol" style="text-align: center; font-weight: 600;">Klik untuk buka surat cinta 💖</p>
+                    <div id="pesanRahasia" class="letter-content">
+                        "Hari ini melelahkan ya? Makasih ya udah bertahan dan berjuang sampai malam ini. Sekarang waktunya istirahat. Tutup matanya manis, lupain sejenak semua urusan dunia yang berat. Semoga mimpi indah, dan sampai ketemu esok hari dengan senyuman terbaikmu. I love you so much, Salma! 💤"
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Navigasi Balik Kiri Bawah -->
+        <div class="bottom-nav">
+            <button class="back-btn" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Generate Bintang
+        const starsBox = document.getElementById('starsBox');
+        const totalStars = 70;
+        for (let i = 0; i < totalStars; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.animationDuration = `${Math.random() * 2 + 1.5}s`;
+            star.style.animationDelay = `${Math.random() * 2}s`;
+            starsBox.appendChild(star);
+        }
+
+        // Logic Slide
+        const slides = document.querySelectorAll('.slide');
+        const progressContainer = document.getElementById('progressContainer');
+        let currentSlide = 0;
+
+        slides.forEach((_, index) => {
+            const bar = document.createElement('div');
+            bar.classList.add('progress-bar');
+            const fill = document.createElement('div');
+            fill.classList.add('progress-fill');
+            fill.id = `fill-${index}`;
+            bar.appendChild(fill);
+            progressContainer.appendChild(bar);
+        });
+
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+                const fill = document.getElementById(`fill-${index}`);
+                if (index <= currentSlide) {
+                    fill.style.width = '100%';
+                } else {
+                    fill.style.width = '0%';
+                }
+            });
+            
+            const backBtn = document.querySelector('.back-btn');
+            if (currentSlide === 0) {
+                backBtn.style.opacity = '0';
+                backBtn.style.pointerEvents = 'none';
+            } else {
+                backBtn.style.opacity = '1';
+                backBtn.style.pointerEvents = 'auto';
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlides();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlides();
+            }
+        }
+
+        updateSlides();
+
+        function bukaSurat() {
+            var pesan = document.getElementById("pesanRahasia");
+            var tombol = document.getElementById("tombol");
+            if (pesan.style.display === "block") {
+                pesan.style.display = "none";
+                tombol.innerHTML = "Klik untuk buka surat cinta 💖";
+            } else {
+                pesan.style.display = "block";
+                tombol.innerHTML = "Tutup Surat 🌌";
+            }
+        }
+    </script>
+</body>
+</html>
